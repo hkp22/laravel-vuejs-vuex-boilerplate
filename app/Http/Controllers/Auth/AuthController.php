@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\Auth\LoginFormRequest;
 use App\Http\Requests\Auth\RegisterFormRequest;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -77,5 +78,30 @@ class AuthController extends Controller
                 'token' => $token
             ]
         ], 201);
+    }
+
+    /**
+     * Logout user.
+     *
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        $this->auth->invalidate($this->auth->getToken());
+
+        return response()->json(null, 201);
+    }
+
+    /**
+     * Login user data.
+     *
+     * @param Request $request
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function user(Request $request)
+    {
+        return response()->json([
+            'data' => $request->user(),
+        ], 200);
     }
 }
