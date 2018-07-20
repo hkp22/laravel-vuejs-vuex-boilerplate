@@ -15,22 +15,25 @@
 
                 </ul>
 
-                <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ml-auto">
-                    <!-- Authentication Links -->
-                    <li class="nav-item">
-                        <router-link class="nav-link" :to="{ name: 'timeline' }">Timeline</router-link>
-                    </li>
+                <ul class="navbar-nav ml-auto" v-if="!user.authenticated">
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{ name: 'register' }">Register</router-link>
                     </li>
-                
+                </ul>
+
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-nav ml-auto" v-if="user.authenticated">
+                    <!-- Authentication Links -->
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{ name: 'timeline' }">Timeline</router-link>
+                    </li>
+                    
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            John Doe<span class="caret"></span>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ user.data.name }} <span class="caret"></span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -44,3 +47,13 @@
         </div>
     </nav>
 </template>
+
+<script>
+import { mapGetters } from "vuex";
+
+export default {
+ computed: mapGetters({
+     user: 'auth/user'
+ })
+}
+</script>
