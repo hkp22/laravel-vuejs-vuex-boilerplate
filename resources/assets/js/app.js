@@ -1,5 +1,11 @@
-import router from './routes';
-import store from './vuex';
+import router from "./routes";
+import store from "./vuex";
+import localforage from "localforage";
+
+localforage.config({
+  driver: localforage.LOCALSTORAGE,
+  storeName: "vuespa"
+});
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -7,9 +13,9 @@ import store from './vuex';
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue');
+window.Vue = require("vue");
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -17,11 +23,18 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('app', require('./components/App.vue'));
-Vue.component('navigation', require('./components/Navigation.vue'));
+Vue.component("app", require("./components/App.vue"));
+Vue.component("navigation", require("./components/Navigation.vue"));
+
+store.dispatch("auth/setToken").then(() => {
+  store.dispatch("auth/fetchUser").catch(() => {
+    store.dispatch("auth/clearAuth");
+    router.replace({ name: "login" });
+  });
+});
 
 const app = new Vue({
-    el: '#app',
-    router: router,
-    store: store
+  el: "#app",
+  router: router,
+  store: store
 });
