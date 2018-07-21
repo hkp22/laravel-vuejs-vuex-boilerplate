@@ -37,7 +37,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="#" @click.prevent="signout">
                                 Logout
                             </a>
                         </div>
@@ -49,11 +49,21 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
- computed: mapGetters({
-     user: 'auth/user'
- })
-}
+  computed: mapGetters({
+    user: "auth/user"
+  }),
+  methods: {
+    ...mapActions({
+      logout: "auth/logout"
+    }),
+    signout() {
+      this.logout().then(() => {
+        this.$router.replace({ name: "home" });
+      });
+    }
+  }
+};
 </script>

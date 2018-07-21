@@ -28,6 +28,12 @@ export const login = ({ dispatch }, { payload, context }) => {
     });
 };
 
+export const logout = ({ dispatch }) => {
+  return axios.post("api/logout").then(response => {
+    dispatch("clearAuth");
+  });
+};
+
 export const fetchUser = ({ commit }) => {
   return axios.get("api/profile").then(response => {
     commit("setAuthenticated", true);
